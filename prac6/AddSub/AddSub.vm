@@ -3,7 +3,25 @@
 // x is a static variable
 
 // Put your code here.
+function AddSub 0
 
+    // Push local variable a onto the stack
+    push local 0
+    
+    // Push local variable b onto the stack
+    push local 1
+
+    // Add a + b
+    add
+
+    // Push static variable x onto the stack
+    push static 0
+
+    // Subtract x from the sum (a + b) - x
+    sub
+
+    // Store the result back in static variable x
+    pop static 0
 
 
 label END
