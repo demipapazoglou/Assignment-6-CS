@@ -4,7 +4,40 @@
 
 // Put your code here.
 
+// Initialize a = 0 (local variable 0)
+push constant 0
+pop local 0
 
+// Load x into D (static 0)
+push static 0
+pop temp 0  // Store x in temp 0
+
+// Load y into D (static 1)
+push static 1
+pop temp 1  // Store y in temp 1
+
+// If y == 0, skip the loop and set a = 0
+push temp 1
+if-goto END
+
+// Label for the loop
+label MULT_LOOP
+
+// Decrease y by 1
+push temp 1
+push constant 1
+sub
+pop temp 1
+
+// Add x to a
+push temp 0    // Push x
+push local 0   // Push a
+add
+pop local 0    // Store new a
+
+// Check if y > 0, continue the loop
+push temp 1
+if-goto MULT_LOOP
 
 label END
 goto END
