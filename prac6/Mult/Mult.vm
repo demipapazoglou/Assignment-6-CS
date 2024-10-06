@@ -3,31 +3,27 @@
 // x & y are static variables
 
 // Put your code here.
-push local 1
-add
-push constant 0
-pop local 0 // a = 0
+// Load x (static 0)
 push static 0
-pop temp 0 // temp 0 = x
-push static 1
-pop temp 1 // temp 1 = y
-push temp 1
+
+// Duplicate x for comparison
+push static 0
+
+// Check if x < 0
 push constant 0
-eq
-if-goto END
-label MULT_LOOP
-push temp 1
-push constant 1
-sub
-pop temp 1 // y = y - 1
-push temp 0    // x
-push local 0   // a
-add
-pop local 0    // a = a + x
-push temp 1
-push constant 0
-gt
-if-goto MULT_LOOP
+lt
+if-goto NEGATIVE
+
+// If x >= 0, store x into y (static 1)
+push static 0
+pop static 1
+goto END
+
+// If x < 0, negate x and store in y
+label NEGATIVE
+push static 0
+neg
+pop static 1 // y = -x
 
 label END
 goto END
