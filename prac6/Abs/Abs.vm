@@ -3,21 +3,26 @@
 
 // Put your code here.
 push static 0
+pop static 1
 
-push static 0
-
-push constant 0
-lt
+// check if x is negative
+push static 1
+lt 0
 if-goto NEGATIVE
 
-push static 0
-pop static 1
+// If x is positive or zero, y = x
+push static 1
 goto END
 
-label NEGATIVE
-push static 0
+// If x is negative, y = -x
+label Negative
+push static 1
 neg
-pop static 1 // y = -x
 
+// Store y in static 1
 label END
-goto END
+pop static 1
+
+// infinite loop
+label LOOP
+goto LOOP
