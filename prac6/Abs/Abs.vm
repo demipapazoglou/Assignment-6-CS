@@ -2,37 +2,21 @@
 // x & y are static variables
 
 // Put your code here.
-push constant 256
-pop sp
-push constant 300
-pop local 0
-push constant 400
-pop argument 0
-push constant 3000
-pop this 0
-push constant 3010
-pop that 0
+push static 0 
+push constant 0
+lt 0
+if-goto NEG
+goto POS
 
-// Load x onto the stack
+label NEG
 push static 0
-
-// Check if x is negative
 neg
-if-goto NEGATIVE
-
-// x is non-negative, so set y to x
-push static 0
+pop static 1
 goto END
 
-// x is negative, so set y to -x
-label NEGATIVE
+label POS
 push static 0
-neg
-
-// Store the absolute value of x in y
-label END
 pop static 1
 
-// End of the program
-label STOP
-goto STOP
+label END
+goto END
