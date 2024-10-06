@@ -43,4 +43,6 @@ gt
 if-goto MULT_LOOP
 
 label END
+push local 0   // Final result is in local 0
+pop static 1   // Store result in static 1 (y)
 goto END
