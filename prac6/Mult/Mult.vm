@@ -3,40 +3,31 @@
 // x & y are static variables
 
 // Put your code here.
-function Mult 1 // Declares a function with 1 local variable (a)
-push constant 0  // Initialize local a to 0
-pop local 0
-
-// Load static 0 (x) and static 1 (y) into the stack
-push static 0  // Load x
-pop temp 0     // Store x in temp 0
-
-push static 1  // Load y
-pop temp 1     // Store y in temp 1
-
-// Multiply by repeated addition (temp 0 is x, temp 1 is y)
-label MULT_LOOP
-push temp 1      // Push y
-push constant 0
-eq               // Check if y == 0
-if-goto MULT_END // If y == 0, exit the loop
-
-push local 0     // Load a
-push temp 0      // Add x to a
+push local 1
 add
-pop local 0      // Store the result back in a
-
-push temp 1      // Decrement y by 1
+push constant 0
+pop local 0 // a = 0
+push static 0
+pop temp 0 // temp 0 = x
+push static 1
+pop temp 1 // temp 1 = y
+push temp 1
+push constant 0
+eq
+if-goto END
+label MULT_LOOP
+push temp 1
 push constant 1
 sub
-pop temp 1
-
-goto MULT_LOOP
-
-label MULT_END
-push local 0     // Push the result (a)
-
-return
+pop temp 1 // y = y - 1
+push temp 0    // x
+push local 0   // a
+add
+pop local 0    // a = a + x
+push temp 1
+push constant 0
+gt
+if-goto MULT_LOOP
 
 label END
 goto END
