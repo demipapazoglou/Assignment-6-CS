@@ -2,7 +2,6 @@
 // n is supplied as an argument
 
 // Put your code here.
-
 function Fib.fib 0
 
 push argument 0
@@ -14,6 +13,7 @@ push argument 0
 push constant 1
 eq
 if-goto BASECASE1
+
 
 push argument 0
 push constant 1
@@ -27,10 +27,10 @@ call Fib.fib 1
 add
 return
 
-label BASECASE 0
+label BASECASE0
 push constant 0
 return
 
-label BASECASE 1
+label BASECASE1
 push constant 1
 return
