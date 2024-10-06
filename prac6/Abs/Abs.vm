@@ -2,33 +2,26 @@
 // x & y are static variables
 
 // Put your code here.
-function Abs 0
+// Load x (static 0) into D
+push static 0
 
-    // Push static variable x onto the stack
-    push static 0
+push static 0
 
-    // Duplicate x on the stack to compare with 0
-    push static 0
-    push constant 0
-    lt               // Check if x < 0
+push constant 0
+lt
+if-goto NEGATIVE
 
-    // If x is less than 0, negate it
-    if-goto NEGATIVE
-
-    // If x is greater than or equal to 0, just store x in y
-    goto STORE_Y
+push static 0
+pop static 1
+goto END
 
 label NEGATIVE
-    // Negate x if it's less than 0
-    push static 0
-    neg
+push constant 0
+sub
+pop static 1 // y = -x
 
-label STORE_Y
-    // Store the result in y (static 1)
-    pop static 1
-
-
-
+label END
+goto END
 
 label END
 goto END
