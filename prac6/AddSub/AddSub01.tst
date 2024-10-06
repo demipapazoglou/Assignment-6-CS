@@ -10,4 +10,4 @@ set local 0 5     // a = 5
 set local 1 3     // b = 3
 set static 0 4    // x = 4
 run
-output static 0   // Expected output: 4 (because (5 + 3) - 4 = 4)
+output static 0   // Expected output: 4
