@@ -2,11 +2,113 @@ class VMTranslator:
 
     def vm_push(segment, offset):
         '''Generate Hack Assembly code for a VM push operation'''
-        return "" 
+        assembly = []
+    
+    if segment == "constant":
+        # Push constant value to the stack
+        assembly.append(f"@{offset}")  # Load the constant value
+        assembly.append("D=A")          # D = value (constant)
+        assembly.append("@SP")          # Point to the stack pointer
+        assembly.append("A=M")          # A = address in SP
+        assembly.append("M=D")          # Store the value in stack
+        assembly.append("@SP")          # Point to SP again
+        assembly.append("M=M+1")        # Increment SP
+
+    elif segment in ["local", "argument", "this", "that"]:
+        base_address = {
+            "local": "LCL",
+            "argument": "ARG",
+            "this": "THIS",
+            "that": "THAT"
+        }[segment]
+        
+        # Push value from local, argument, this, or that segment
+        assembly.append(f"@{base_address}")  # Load the base address
+        assembly.append("D=M")               # D = base address
+        assembly.append(f"@{offset}")         # Load the index
+        assembly.append("A=D+A")             # A = base + index
+        assembly.append("D=M")               # D = value at segment[index]
+        assembly.append("@SP")               # Point to SP
+        assembly.append("A=M")               # A = address in SP
+        assembly.append("M=D")               # Store value on the stack
+        assembly.append("@SP")               # Increment SP
+        assembly.append("M=M+1")
+
+    elif segment == "static":
+        assembly.append(f"@Static.{offset}")  # Load the static variable
+        assembly.append("D=M")               # D = static variable
+        assembly.append("@SP")               # Point to SP
+        assembly.append("A=M")               # A = address in SP
+        assembly.append("M=D")               # Store value on the stack
+        assembly.append("@SP")               # Increment SP
+        assembly.append("M=M+1")
+        
+    elif segment == "temp":
+        assembly.append(f"@{5 + offset}")     # Temp segments start from R5
+        assembly.append("D=M")               # D = value at temp[index]
+        assembly.append("@SP")               # Point to SP
+        assembly.append("A=M")               # A = address in SP
+        assembly.append("M=D")               # Store value on the stack
+        assembly.append("@SP")               # Increment SP
+        assembly.append("M=M+1")
+    
+    elif segment == "pointer":
+        pointer_address = 3 + offset  # Pointer segments start from R3
+        assembly.append(f"@{pointer_address}")  # Load pointer address
+        assembly.append("D=M")               # D = value at pointer[index]
+        assembly.append("@SP")               # Point to SP
+        assembly.append("A=M")               # A = address in SP
+        assembly.append("M=D")               # Store value on the stack
+        assembly.append("@SP")               # Increment SP
+        assembly.append("M=M+1")
+    
+    return "\n".join(assembly)
 
     def vm_pop(segment, offset):
         '''Generate Hack Assembly code for a VM pop operation'''
-        return ""
+        assembly = []
+
+        assembly.append("@SP")
+        assembly.append("M=M-1")
+        assembly.append("A=M)
+        assembly.append("D=M")
+
+        if segment in ["local", "argument", "this", "that"]:
+        base_address = {
+            "local": "LCL",
+            "argument": "ARG",
+            "this": "THIS",
+            "that": "THAT"
+        }[segment]
+
+        assembly.append(f"@{base_address}")  # Load the base address
+        assembly.append("D=M")               # D = base address
+        assembly.append(f"@{offset}")         # Load the index
+        assembly.append("D=D+A")             # D = base + index
+        assembly.append("@R13")              # Use R13 as a temporary storage
+        assembly.append("M=D")                # Store the address in R13
+        assembly.append("@R13")              # Load address from R13
+        assembly.append("A=M")               # A = address in segment
+        assembly.append("M=D")  
+
+    elif segment == "static":
+        assembly.append(f"@Static.{offset}")  # Load the static variable
+        assembly.append("A=M")               # A = address of static variable
+        assembly.append("M=D")               # Store value on the static variable
+
+    elif segment == "temp":
+        assembly.append(f"@{5 + offset}")     # Temp segments start from R5
+        assembly.append("M=D")               # Store value at the temp index
+
+    elif segment == "pointer":
+        pointer_address = 3 + offset  # Pointer segments start from R3
+        assembly.append(f"@{pointer_address}")  # Load pointer address
+        assembly.append("M=D")               # Store value at pointer
+
+    return "\n".join(assembly)
+                    
+
+            
 
     def vm_add():
         '''Generate Hack Assembly code for a VM add operation'''
